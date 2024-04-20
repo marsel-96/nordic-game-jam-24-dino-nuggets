@@ -34,12 +34,10 @@ namespace _Project.Code.Scripts
             if (Input.GetMouseButtonDown(0))
             {
                 _drawState = DrawState.StartDraw;
-                Debug.Log("Start Draw");
             }
             if (Input.GetMouseButtonUp(0))
             {
                 _drawState = DrawState.EndDraw;
-                Debug.Log("End Draw");
             }
 
             switch (_drawState)

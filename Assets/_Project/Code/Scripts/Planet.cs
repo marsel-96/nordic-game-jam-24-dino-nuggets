@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Planet : MonoBehaviour
@@ -8,10 +7,11 @@ public class Planet : MonoBehaviour
     private float _yVelocity;
     private float _zVelocity;
     
-
     public bool isMeteorito;
-
+    
+    private int _lives = 3;
     private float _velocityMultiplayer;
+
     private void Start()
     {
         _xVelocity = Random.Range(1f, 9f);
@@ -28,20 +28,35 @@ public class Planet : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        transform.Rotate(_velocityMultiplayer*_xVelocity*Time.deltaTime, _velocityMultiplayer*_yVelocity*Time.deltaTime,_velocityMultiplayer*_zVelocity*Time.deltaTime);
+        
+        transform.Rotate(_velocityMultiplayer * _xVelocity * Time.deltaTime, _velocityMultiplayer * _yVelocity * Time.deltaTime, _velocityMultiplayer * _zVelocity * Time.deltaTime);
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
         var beam = other.GetComponent<RayBeam>();
-        // TODO Trigger damage effect
         Destroy(beam.gameObject);
+        _lives--;
+        GameManager.Instance.DecreaseScore();
+        
+        LeanTween.value(1, 70, 0.15f)
+            .setEaseOutCubic()
+            .setOnUpdate(x => { _velocityMultiplayer = x; })
+            .setOnComplete(_ => LeanTween.value(70, 1, 1.0f)
+                .setEaseInCubic()
+                .setOnUpdate(x => { _velocityMultiplayer = x; }));
 
-        LeanTween.value(1, 70, 0.15f).setEaseOutCubic().setOnUpdate(x => _velocityMultiplayer = x).
-            setOnComplete(x => LeanTween.value(70, 1, 1.0f).setEaseInCubic().setOnUpdate(x => _velocityMultiplayer = x));
-        //LeanTween.moveLocalX(gameObject, 0.1f, 0.25f).setEaseShake().setRepeat(2);
-        LeanTween.value(0f, 0.1f, 0.25f).setEaseShake().setRepeat(2).setOnUpdate(x=> transform.parent.localPosition = Vector3.one*x);
+        // LeanTween.moveLocalX(gameObject, 0.1f, 0.25f).setEaseShake().setRepeat(2);
+
+        LeanTween
+            .value(0f, 0.1f, 0.25f)
+            .setEaseShake()
+            .setRepeat(2)
+            .setOnUpdate(x => transform.parent.localPosition = Vector3.one * x);
+        
+        if (_lives <= 0)
+        {
+            gameObject.SetActive(false);
+        }
     }
-    
-    
 }

@@ -1,22 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     private int _playerScore;
-    private int _scoreIncreaser;
-
+    private int _scoreIncreaser = 2;
+    private int _scoreDecreaser = 15;
+    
+    private int multiplier = 3;
+    
     public BeamGenerator generator;
     public TextMeshProUGUI uiText;
     
-    
+    public static GameManager Instance { get; private set; }
 
-    private void IncreaseScore()
+    private void Awake()
     {
-        _playerScore += _scoreIncreaser;
-        uiText.text = _playerScore + "0";
+        if (Instance != null && Instance != this) 
+        { 
+            Destroy(this); 
+        } 
+        else 
+        { 
+            Instance = this; 
+        }
     }
+    
+    public void AddPlanet()
+    {
+        _scoreIncreaser += 1;
+    }
+    
+    public void DecreasePlanet()
+    {
+        _scoreIncreaser -= 1;
+    }
+    
+    public void IncreaseScore()
+    {
+        _playerScore += _scoreIncreaser * multiplier;
+        uiText.text = $"{_playerScore:D8}";
+    }
+    
+    public void DecreaseScore()
+    {
+        _playerScore -= _scoreDecreaser;
+        if (_playerScore < 0)
+        {
+            _playerScore = 0;
+        }
+        uiText.text = $"{_playerScore:D8}";
+    }
+    
 }

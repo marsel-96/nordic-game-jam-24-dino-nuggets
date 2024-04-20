@@ -36,6 +36,7 @@ public class RayBeam : MonoBehaviour
         _timeAlive += Time.deltaTime;
         if (_timeAlive > _timeToLive)
         {
+            GameManager.Instance.IncreaseScore();
             Destroy(gameObject);
         }
         

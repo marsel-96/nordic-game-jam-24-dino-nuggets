@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,12 +11,44 @@ public class BeamGenerator : MonoBehaviour
 
     public GameObject beam;
 
+    [SerializeField] private float waveLength = 20.0f;
+    [SerializeField] private float waveGranularity = 0.5f;
+    [SerializeField] private float difficulty = 0.0f;
+
+    private float _timerSample;
+    private float _timerWave;
+    
     private enum Sides
     {
         Left,
         Right,
         Up,
         Down
+    }
+
+    private bool AutomaticSpawn()
+    {
+        _timerSample += Time.deltaTime;
+        _timerWave += Time.deltaTime;
+
+        if (_timerSample >= waveGranularity)
+        {
+            _timerSample = 0.0f;
+            var bias = Utils.EaseOutElastic(
+                difficulty + Mathf.Clamp(_timerWave, 0, waveLength) / waveLength
+            );
+            var probability = bias + Random.Range(0, 1);
+            return probability >= 1.0f;
+        }
+        
+        if (_timerWave >= waveLength)
+        {
+            _timerWave = 0.0f;
+            difficulty += 0.05f;
+            difficulty = Mathf.Clamp(difficulty, 0.0f, .3f);
+        }
+
+        return false;
     }
 
     private void Update()
@@ -31,6 +59,11 @@ public class BeamGenerator : MonoBehaviour
         }
         
         if (Input.GetKeyDown(KeyCode.P))
+        {
+            SpawnBeam();
+        }
+
+        if (AutomaticSpawn())
         {
             SpawnBeam();
         }
