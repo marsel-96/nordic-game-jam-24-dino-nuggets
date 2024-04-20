@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BeamGenerator : MonoBehaviour
 {
@@ -10,12 +12,22 @@ public class BeamGenerator : MonoBehaviour
     private Vector3 _rightUpCorner;
     private Vector3 _rightDownCorner;
 
+    public GameObject beam;
+
     private enum Sides
     {
         LeftUp,
         LeftDown,
         RightUp,
         RightDown
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Instantiate(beam,new Vector3(0, 5, -8), Quaternion.identity);
+        }
     }
 
     private void SpawnBeam()
@@ -37,4 +49,5 @@ public class BeamGenerator : MonoBehaviour
                 break;
         } 
     }
+    
 }

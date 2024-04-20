@@ -10,11 +10,13 @@ public class Reflection : MonoBehaviour
     
     private float _timeAlive;
 
+    public bool infiniteTime;
+
     private void Update()
     {
         _timeAlive += Time.deltaTime;
 
-        if (_timeAlive >= lifeTime)
+        if (_timeAlive >= lifeTime && !infiniteTime)
         {
             Destroy(gameObject);
         }
