@@ -6,6 +6,20 @@ using UnityEngine;
 
 public class Reflection : MonoBehaviour
 {
+    [SerializeField] private float lifeTime = 1.0f;
+    
+    private float _timeAlive;
+
+    private void Update()
+    {
+        _timeAlive += Time.deltaTime;
+
+        if (_timeAlive >= lifeTime)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         var beam = collision.collider.GetComponent<RayBeam>();
