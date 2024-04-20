@@ -8,10 +8,15 @@ using Random = UnityEngine.Random;
 public class RayBeam : MonoBehaviour
 {
 
-    private float _timeToSmoke;
-    private float _prevSmoke;
+    
     [SerializeField] private float velocity = 5.0f;
     [SerializeField] private GameObject particle;
+    
+    private float _timeToSmoke;
+    private float _prevSmoke;
+
+    private float _timeToLive = 10.0f;
+    private float _timeAlive;
 
     private void Awake()
     {
@@ -27,6 +32,14 @@ public class RayBeam : MonoBehaviour
         Vector3.Normalize(axis);
         transform.position += axis * (velocity * Time.deltaTime);
 
+        //Despawn
+        _timeAlive += Time.deltaTime;
+        if (_timeAlive > _timeToLive)
+        {
+            Destroy(gameObject);
+        }
+        
+        
         //Particle
         _prevSmoke += Time.deltaTime;
         if (!(_prevSmoke > _timeToSmoke)) return;
