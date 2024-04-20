@@ -63,7 +63,7 @@ public class BeamGenerator : MonoBehaviour
         spawnPoint.y = transform.position.y;
         
         Vector2 randomPoint =  Random.insideUnitCircle * 6;
-        Vector3 spawnDirection =  new Vector3(randomPoint.x, 5,randomPoint.y ) - spawnPoint;
+        Vector3 spawnDirection =  new Vector3(randomPoint.x, 1.5f,randomPoint.y ) - spawnPoint;
         
         GameObject clone = Instantiate(beam, spawnPoint, beam.transform.rotation);
         clone.transform.forward = spawnDirection.normalized;

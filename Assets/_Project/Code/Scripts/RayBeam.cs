@@ -2,13 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class RayBeam : MonoBehaviour
 {
-    private float _lifeTime = 10.0f;
-    private float _timeAlive;
+   
     
     [SerializeField] private float velocity = 5.0f;
+
+    private void Awake()
+    {
+        velocity = Random.Range(4.0f, 7.0f);
+    }
+
     private void Update()
     {
         Vector3 axis = transform.forward;
@@ -16,12 +22,6 @@ public class RayBeam : MonoBehaviour
         axis.y = 0;
         Vector3.Normalize(axis);
         transform.position += axis * (velocity * Time.deltaTime);
-
-        _timeAlive += Time.deltaTime;
-        if (_timeAlive > _lifeTime)
-        {
-            Destroy(gameObject);
-        }
 
     }
 }
