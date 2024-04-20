@@ -11,6 +11,9 @@ public class RayBeam : MonoBehaviour
 
     private void Update()
     {
-        transform.position += transform.forward * velocity * Time.deltaTime;
+        Vector3 axis = transform.forward;
+        axis.y = 0;
+        Vector3.Normalize(axis);
+        transform.position += axis * (velocity * Time.deltaTime);
     }
 }
