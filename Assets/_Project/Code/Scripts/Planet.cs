@@ -7,11 +7,19 @@ public class Planet : MonoBehaviour
     private float _xVelocity;
     private float _yVelocity;
     private float _zVelocity;
+
+    public bool isMeteorito;
     void Start()
     {
         _xVelocity = Random.Range(1f, 9f);
         _yVelocity = Random.Range(1f, 9f);
         _zVelocity = Random.Range(1f, 9f);
+        if (isMeteorito)
+        {
+            _xVelocity *= 10;
+            _yVelocity *= 10;
+            _zVelocity *= 10;
+        }
     }
 
     // Update is called once per frame
