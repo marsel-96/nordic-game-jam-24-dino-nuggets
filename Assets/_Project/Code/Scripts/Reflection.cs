@@ -31,6 +31,7 @@ public class Reflection : MonoBehaviour
 
             Vector3 finaldirection = beamDirection - 2 * (Vector3.Dot(beamDirection,transform.forward)) * transform.forward;
             beam.transform.forward = finaldirection;
+            beam.transform.position = collision.GetContact(0).point;
             Destroy(gameObject);
         }
     }
