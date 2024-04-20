@@ -18,9 +18,11 @@ namespace _Project.Code.Scripts
         [SerializeField] private float distanceEpsilon = 1.5f;
 
         [SerializeField] private GameObject mirrorPrefabTemplate;
+        [SerializeField] private float maxLineLength = 5.0f;
         
         private DrawState _drawState = DrawState.None;
         private float _distanceCamera;
+        private bool _badMirror = false;
         
         private void Awake()
         {
@@ -73,9 +75,6 @@ namespace _Project.Code.Scripts
         private void StartDraw()
         {
             var mousePosition = GetMousePositionInWorld();
-            
-            Debug.Log(mousePosition);
-            
             lineRenderer.SetPosition(0, mousePosition);
             lineRenderer.SetPosition(1, mousePosition);
         }
@@ -84,13 +83,43 @@ namespace _Project.Code.Scripts
         {
             var mousePosition = GetMousePositionInWorld();
             
-            Debug.Log(mousePosition);
+            var origin = lineRenderer.GetPosition(0);
+            var target = mousePosition;
 
+            var direction = target - origin;
+            var length = direction.magnitude;
+            
+            var isLineIntersectingPlanet = Physics.Raycast(origin, direction.normalized, out var hit) && hit.distance <= length;
+            var isLineTooLong = length >= maxLineLength;
+            
+            if (isLineIntersectingPlanet && hit.collider.GetType() != typeof(BoxCollider))
+            {
+                lineRenderer.SetPosition(1, lineRenderer.GetPosition(0));
+                _badMirror = true;
+                return;
+            }
+            
+            if (isLineTooLong)
+            {
+                _badMirror = false;
+                lineRenderer.SetPosition(1, direction.normalized * maxLineLength + origin);
+                return;
+            }
+            
+            _badMirror = false;
             lineRenderer.SetPosition(1, mousePosition);
         }
         
         private void EndDraw()
         {
+            if (_badMirror)
+            {
+                lineRenderer.SetPosition(0, Vector3.zero);
+                lineRenderer.SetPosition(1, Vector3.zero);
+                
+                return;
+            }
+            
             var difference = lineRenderer.GetPosition(1) - lineRenderer.GetPosition(0);
             var normal = Vector3.Cross(Vector3.up, difference).normalized;
             var middlePoint = difference / 2 + lineRenderer.GetPosition(0);
