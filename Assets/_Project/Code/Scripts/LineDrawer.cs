@@ -19,7 +19,7 @@ namespace _Project.Code.Scripts
 
         [SerializeField] private GameObject mirrorPrefabTemplate;
         
-        private DrawState _drawState;
+        private DrawState _drawState = DrawState.None;
         private float _distanceCamera;
         
         private void Awake()
@@ -97,25 +97,14 @@ namespace _Project.Code.Scripts
             
             lineRenderer.SetPosition(0, Vector3.zero);
             lineRenderer.SetPosition(1, Vector3.zero);
-            
-            // var meshCollider = lineRenderer.gameObject.AddComponent<MeshCollider>();
-            // var mesh = new Mesh();
-            // lineRenderer.BakeMesh(mesh, true);
-            // meshCollider.sharedMesh = mesh;
 
             var go = Instantiate(mirrorPrefabTemplate, middlePoint, Quaternion.LookRotation(normal));
+            
             var coll = go.GetComponent<BoxCollider>();
             var size = coll.size;
             var scale = go.transform.localScale;
             scale.x = difference.magnitude;
             go.transform.localScale = scale;
-            // size.x = difference.magnitude;
-            // coll.size = size;
-            
-            // var goCollider = go.AddComponent<CapsuleCollider>();
-            // goCollider.height = difference.magnitude;
-            // goCollider.radius = 1.0f;
-            // goCollider.direction = 0;
         }
     }
 }
