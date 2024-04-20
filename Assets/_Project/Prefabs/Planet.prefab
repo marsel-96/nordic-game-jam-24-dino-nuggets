@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 1909321710015052536}
   - component: {fileID: 7716396093038256999}
   - component: {fileID: 7453781671908815964}
+  - component: {fileID: 1275167360861563569}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -75,7 +76,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 4.56, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6821823709155703446}
   - {fileID: 2290404265001570946}
@@ -149,6 +150,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMeteorito: 0
+--- !u!64 &1275167360861563569
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055294722819970520}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -425171608731709130, guid: 309941611251cf04687b43ad8f3cf0ba, type: 3}
 --- !u!1 &6653491906067089744
 GameObject:
   m_ObjectHideFlags: 0
