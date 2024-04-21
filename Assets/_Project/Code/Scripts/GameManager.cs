@@ -4,10 +4,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     private int _playerScore;
-    private int _scoreIncreaser = 2;
-    private int _scoreDecreaser = 15;
+    [SerializeField] private int scoreIncreaser = 2;
+    [SerializeField] private int scoreDecreaser = 15;
     
-    private int multiplier = 3;
+    [SerializeField] private int multiplier = 3;
     
     public BeamGenerator generator;
     public TextMeshProUGUI uiText;
@@ -28,23 +28,23 @@ public class GameManager : MonoBehaviour
     
     public void AddPlanet()
     {
-        _scoreIncreaser += 1;
+        scoreIncreaser += 1;
     }
     
     public void DecreasePlanet()
     {
-        _scoreIncreaser -= 1;
+        scoreIncreaser -= 1;
     }
     
     public void IncreaseScore()
     {
-        _playerScore += _scoreIncreaser * multiplier;
+        _playerScore += scoreIncreaser * multiplier * 2;
         uiText.text = $"{_playerScore:D8}";
     }
     
     public void DecreaseScore()
     {
-        _playerScore -= _scoreDecreaser;
+        _playerScore -= scoreDecreaser;
         if (_playerScore < 0)
         {
             _playerScore = 0;

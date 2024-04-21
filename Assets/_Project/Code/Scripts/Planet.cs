@@ -1,5 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Planet : MonoBehaviour
 {
@@ -12,6 +17,15 @@ public class Planet : MonoBehaviour
     private int _lives = 3;
     private float _velocityMultiplayer;
 
+    [SerializeField] private List<Dino> dinosaurs;
+    
+    public void Resurrect()
+    {
+        _lives = 3;
+        gameObject.SetActive(true);
+        dinosaurs.ForEach(it => it.Resurrect());
+    }
+    
     private void Start()
     {
         _xVelocity = Random.Range(1f, 9f);
@@ -25,6 +39,19 @@ public class Planet : MonoBehaviour
         }
     }
 
+    private void LoseLife()
+    {
+        _lives--;
+        
+        GameManager.Instance.DecreaseScore();
+        
+        var dino = dinosaurs.FirstOrDefault(dino => !dino.IsEjected);
+        if (dino != null)
+        {
+            dino.EjectIntoSpace();
+        }
+    }
+    
     // Update is called once per frame
     private void Update()
     {
@@ -36,8 +63,8 @@ public class Planet : MonoBehaviour
     {
         var beam = other.GetComponent<RayBeam>();
         Destroy(beam.gameObject);
-        _lives--;
-        GameManager.Instance.DecreaseScore();
+        
+        LoseLife();
         
         LeanTween.value(1, 70, 0.15f)
             .setEaseOutCubic()
@@ -56,6 +83,7 @@ public class Planet : MonoBehaviour
         
         if (_lives <= 0)
         {
+            GameManager.Instance.DecreasePlanet();
             gameObject.SetActive(false);
         }
     }

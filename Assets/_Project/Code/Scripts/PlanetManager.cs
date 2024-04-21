@@ -27,7 +27,8 @@ namespace _Project.Code.Scripts
             {
                 if (!planet.isActiveAndEnabled)
                 {
-                    planet.gameObject.SetActive(true);
+                    planet.Resurrect();
+                    GameManager.Instance.AddPlanet();
                     return;
                 }
             }
